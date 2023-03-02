@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize')
 
 const db = require('../utils/database')
 
-const seriesGenre = db.define('series_genres', {
+const seriesGenre = db.define('seriesGenres', {
     id: {
         type: DataTypes.UUID,
         primaryKey: true

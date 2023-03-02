@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize')
 
 const db = require('../utils/database')
 
-const movieGenres = db.define('movie_genres', {
+const movieGenres = db.define('movieGenres', {
     id: {
         type: DataTypes.UUID,
         primaryKey: true
@@ -12,7 +12,7 @@ const movieGenres = db.define('movie_genres', {
         allowNull: false
     },
     movieId: {
-        type: DataTypes.STRING,
+        type: DataTypes.UUID,
         allowNull: false
     }
 })

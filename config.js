@@ -5,16 +5,22 @@ const config = {
         port: process.env.PORT,
         host: process.env.HOST,
         nodeEnv: process.env.NODE_ENV,
-        secretOrKey: process.env.JWT_SECRET
+        secretOrKey: process.env.JWT_SECRET,
+        firebase: {
+            apiKey: process.env.FIREBASE_API_KEY,
+            authDomain: process.env.FIREBASE_AUTH_DOM,
+            projectId: process.env.FIREBASE_PROJECT_ID,
+            storageBucket: process.env.FIREBASE_STORAGE_BUCKET
+        }
     },
     db: {
         development: {
             dialect: 'postgres',
             host: 'localhost',
-            port: 7000,
+            port: 5432,
             username: 'postgres',
             password: 'PacoRo0t',
-            database: 'example',
+            database: 'movies',
             define: {
                 timestamps: true,
                 underscoredAll: true

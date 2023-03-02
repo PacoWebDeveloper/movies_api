@@ -16,7 +16,7 @@ const episodes = db.define('episodes', {
         allowNull: false
     },
     seasonId: {
-        type: DataTypes.STRING,
+        type: DataTypes.UUID,
         allowNull: false
     },
     episodeNumber: {

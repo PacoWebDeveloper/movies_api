@@ -1,7 +1,7 @@
 const checkUserCredentials =  require('./auth.controller')
 const resposes = require('../utils/handleResponses')
 const jwt = require('jsonwebtoken')
-const config = require('../config').api
+const config = require('../../config').api
 
 const postLogin = (req, res) => {
     const { email, password } = req.body
