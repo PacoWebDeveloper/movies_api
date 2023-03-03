@@ -36,6 +36,12 @@ const config = {
             define: {
                 timestamps: true,
                 underscoredAll: true
+            },
+            dialectOptions: {
+                ssl: {
+                    require: true,
+                    rejectUnauthorized: true
+                }
             }
         }
     }    
