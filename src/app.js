@@ -11,6 +11,8 @@ const responses = require('./utils/handleResponses')
 
 const userRouter = require('./users/users.router')
 const authRouter = require('./auth/auth.router')
+const moviesRouter = require('./movies/movies.router')
+const genresRouter = require('./genres/genres.router')
 
 const app = express()
 
@@ -53,6 +55,8 @@ app.post('/upload-file', upload.fields([
 
 app.use('/api/v1/', userRouter)
 app.use('/api/v1/', authRouter)
+app.use('/api/v1/', moviesRouter)
+app.use('/api/v1/', genresRouter)
 
 app.use('*', (req, res) => {
     responses.error({

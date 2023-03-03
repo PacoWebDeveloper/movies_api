@@ -1,3 +1,4 @@
+const Users = require('./users.model')
 const movies = require('./movies.model')
 const genres = require('./genres.models')
 const moviesGenres = require('./movieGenres.model')
@@ -7,6 +8,9 @@ const seasons = require('./seasons.model')
 const episodes = require('./episodes.model')
 
 const initModels = () => {
+
+    Users
+
     movies.belongsToMany(genres, {through: 'movieGenres'})
     genres.belongsToMany(movies, {through: 'movieGenres'})
 
