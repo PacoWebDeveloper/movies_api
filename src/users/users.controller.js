@@ -33,7 +33,11 @@ const createNewUser = async (userObj) => {
         email: userObj.email,
         password: hashPassword(userObj.password),
         profileImage: userObj.profileImage,
-        phone : userObj.phone
+        phone : userObj.phone,
+        gender: userObj.gender,
+        birthday: userObj.birthday,
+        role: userObj.role,
+        status: userObj.status
     }
     const data = await Users.create(newUser)
     return data
