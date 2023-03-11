@@ -44,7 +44,7 @@ const createNewUser = async (userObj) => {
 }
 
 const updateUser = async (id, userObj) => {
-    //data === 1
+    
     const data = await Users.update(userObj,{
         where: {
             id: id

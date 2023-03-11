@@ -3,6 +3,9 @@ require('dotenv').config()
 const config = require('../config').api
 const { host, port } = config
 const upload = require('./utils/multer')
+const swaggerUi = require('swagger-ui-express')
+
+const swaggerDocument = require('./swagger.json');
 
 const db = require('./utils/database')
 const initModels = require('./models/initModels')
@@ -57,6 +60,8 @@ app.use('/api/v1/', userRouter)
 app.use('/api/v1/', authRouter)
 app.use('/api/v1/', moviesRouter)
 app.use('/api/v1/', genresRouter)
+
+app.use('/api/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use('*', (req, res) => {
     responses.error({

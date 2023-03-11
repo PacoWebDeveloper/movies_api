@@ -211,14 +211,20 @@ const patchMyUser = (req, res) => {
 
     const { firstName, lastName, email, password, profileImage, phone } = req.body
 
-    const userObj = {
-        firstName,
-        lastName,
-        email,
-        password: hashPassword(password),
-        profileImage,
-        phone
-    }
+    const userObj = {}
+
+    if (firstName)
+        userObj.firstName = firstName
+    if (lastName)
+        userObj.lastName = lastName
+    if (email)
+        userObj.email = email
+    if (password)
+        userObj.password = hashPassword(password)
+    if (profileImage)
+        userObj.profileImage = profileImage
+    if (phone)
+        userObj.phone = phone
 
     usersControllers.updateUser(id, userObj)
         .then(() => {

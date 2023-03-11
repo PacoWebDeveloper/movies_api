@@ -1,0 +1,81 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "API for movies application as streaming popular web apps",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/v1/users": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "All users retreived"
+                    },
+                    "400": {
+                        "description": "Something went wrong getting users"
+                    }
+                }
+            }
+        },
+        "/api/v1/movies/{movieId}": {
+            "get": {
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "type":"object",
+                            "properties": {
+                                "email":{
+                                    "type":"string"
+                                },
+                                "password":{
+                                    "type":"string"
+                                }
+                            }
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Movie retreived successfully"
+                    },
+                    "400": {
+                        "description": "Something went wrong getting the movie"
+                    }
+                }
+            }
+        },
+        "/api/v1/login/{userCredentials}": {
+            "get": {
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "type":"object",
+                            "properties": {
+                                "email":{
+                                    "type":"string"
+                                },
+                                "password":{
+                                    "type":"string"
+                                }
+                            }
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Welcome"
+                    },
+                    "400": {
+                        "description": "Wrong credentials"
+                    }
+                }
+            }
+        }
+    }
+}
