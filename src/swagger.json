@@ -4,9 +4,124 @@
         "title": "API for movies application as streaming popular web apps",
         "version": "1.0.0"
     },
+    "host": "localhost:3000",
+    "basePath": "/api/v1",
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "securityDefinitions": {
+        "bearerToken": {
+            "type": "apiKey",
+            "in": "header",
+            "name": "Authentication"
+        }
+    },
+    "definitions": {
+        "User": {
+            "properties": {
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "example@mail.com"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "profileImage": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "+524612976566"
+                },
+                "gender": {
+                    "type": "string",                                    
+                    "example": "Male / Female"
+                },
+                "birthday": {
+                    "type": "string",                                    
+                    "example": "yyyy/mm/dd"
+                },
+                "role": {
+                    "type": "string",
+                    "default": "user"
+                },
+                "status": {
+                    "type": "string",
+                    "default": "Active"
+                }
+            },
+            "required": ["firstName","lastName","email","password","phone","gender","birthday"]
+        },
+        "Movie": {
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "synopsis": {
+                    "type": "string",
+                    "description": "Supports text over 250 characters"
+                },
+                "releaseYear": {
+                    "type": "string",
+                    "example": "1999/07/05"
+                },
+                "director": {
+                    "type": "string"
+                },
+                "duration": {
+                    "type": "integer",
+                    "description": "Duration in minutes"
+                },
+                "trailerUrl": {
+                    "type": "string",
+                    "example": "www.moviestrailer.com"
+                },
+                "coverUrl": {
+                    "type": "string",
+                    "example": "www.moviescovers.com"
+                },
+                "movieUrl": {
+                    "type": "string",
+                    "example": "www.movies.com"
+                },
+                "clasification": {
+                    "type": "string",
+                    "example": "A"
+                },
+                "rating": {
+                    "type": "number",
+                    "example": "4.8",
+                    "description": "Numbers between 0 and 5"
+                }
+            },
+            "required": [
+                "title","synopsis","releaseYear","director",
+                "duration","trailerUrl","coverUrl","movieUrl",
+                "clasification","rating"
+            ]
+        },
+        "Genre": {
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            },
+            "required": ["id","name"]
+        }
+    },
     "paths": {
-        "/api/v1/users": {
+        "/users": {
             "get": {
+                "description": "## Gets all users",
                 "responses": {
                     "200": {
                         "description": "All users retreived"
@@ -15,40 +130,31 @@
                         "description": "Something went wrong getting users"
                     }
                 }
-            }
-        },
-        "/api/v1/movies/{movieId}": {
-            "get": {
+            },
+            "post": {
+                "description": "## Creates a new user",
                 "parameters": [
                     {
-                        "in": "body",
+                        "in":"body",
                         "name": "body",
                         "schema": {
-                            "type":"object",
-                            "properties": {
-                                "email":{
-                                    "type":"string"
-                                },
-                                "password":{
-                                    "type":"string"
-                                }
-                            }
-                        },
-                        "required": true
+                            "$ref": "#/definitions/User"
+                        }
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "Movie retreived successfully"
+                    "201": {
+                        "description": "User created successfully"
                     },
                     "400": {
-                        "description": "Something went wrong getting the movie"
+                        "description": "Something went wrong creating users"
                     }
                 }
             }
         },
-        "/api/v1/login/{userCredentials}": {
-            "get": {
+        "/login": {
+            "post": {
+                "description": "## Login with your user credentials",
                 "parameters": [
                     {
                         "in": "body",
@@ -57,14 +163,15 @@
                             "type":"object",
                             "properties": {
                                 "email":{
-                                    "type":"string"
+                                    "type":"string",
+                                    "example": "example@mail.com"
                                 },
                                 "password":{
                                     "type":"string"
                                 }
-                            }
-                        },
-                        "required": true
+                            },
+                            "required": ["email","password"]
+                        }
                     }
                 ],
                 "responses": {
@@ -73,6 +180,168 @@
                     },
                     "400": {
                         "description": "Wrong credentials"
+                    }
+                }
+            }
+        },
+        "/users/me": {
+            "get": {
+                "description": "## Gets your own user",
+                "security": [{"bearerToken": [""]}],
+                "responses": {
+                    "200": {
+                        "description": "User retreived successfully"
+                    },
+                    "400": {
+                        "description": "Something went wrong getting your user"
+                    }
+                }                
+            },
+            "patch" : {
+                "description": "## Update your own user -> # **At least one parameter must be sent (You can send any parameter, is not necesary to send all parameters)**",
+                "security": [{"bearerToken": [""]}],
+                "parameters": [
+                    {
+                        "in":"body",
+                        "name": "body",
+                        "schema": {
+                            
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User updated successfully"
+                    },
+                    "400": {
+                        "description": "Something went wrong updating your user"
+                    }
+                }
+            },
+            "delete": {
+                "description": "## Deletes you own user",
+                "security": [{"bearerToken": [""]}],
+                "responses": {
+                    "200": {
+                        "description": "Your user was deleted successfully"
+                    },
+                    "400": {
+                        "description": "Something went bad deleting your user"
+                    }
+                }
+            }
+        },
+        "/movies": {
+            "get": {
+                "description": "## Gets all movies",
+                "responses": {
+                    "200": {
+                        "description": "Movies retreived successfully"
+                    },
+                    "400": {
+                        "description": "Something went wrong getting movies"
+                    }
+                }
+            },
+            "post": {
+                "description": "## Creates a new movie",
+                "parameters": [
+                    {
+                        "in":"body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Movie"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Movie created successfully"
+                    },
+                    "400": {
+                        "description": "Something went wrong creating movie"
+                    }
+                }
+            }
+        },
+        "/movies/genres/{genreId}": {
+            "get": {
+                "description": "### Gets the genre of a movie",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "genreId",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Genre retreived successfully"
+                    },
+                    "400": {
+                        "description": "Something went wrong getting movie's genre"
+                    }
+                }
+            }
+        },
+        "/movies/{movieId}/genres/{genreId}": {
+            "post": {
+                "description": "### Assign genre to a movie",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "movieId",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "genreId",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Relation created successfully"
+                    },
+                    "400": {
+                        "description": "Something went wrong assigning genre to a movie"
+                    }
+                }
+            }
+        },
+        "/genres": {
+            "get": {
+                "description": "### Gets all genres",
+                "responses": {
+                    "200": {
+                        "description": "Genres retreived successfully"
+                    },
+                    "400": {
+                        "description": "Something went wrong getting genres"
+                    }
+                }
+            },
+            "post": {
+                "description": "### Creates a new genre",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Genre"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Genre created successfully"
+                    },
+                    "400": {
+                        "description": "Something went wrong creating genre"
                     }
                 }
             }

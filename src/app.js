@@ -2,6 +2,7 @@ const express = require('express')
 require('dotenv').config()
 const config = require('../config').api
 const { host, port } = config
+const baseUrl = '/api/v1'
 const upload = require('./utils/multer')
 const swaggerUi = require('swagger-ui-express')
 
@@ -43,7 +44,7 @@ app.get('/', (req, res) => {
     responses.success({
         res,
         status: 200,
-        message: 'Welcome to movies API created by Francisco Ortiz'
+        message: `Welcome to movies API created by Francisco Ortiz, please go to this route to see available end points: ${host}:${port}/api/v1/api-docs`
     })
 })
 
@@ -56,10 +57,10 @@ app.post('/upload-file', upload.fields([
     res.status(200).json({file})
 })
 
-app.use('/api/v1/', userRouter)
-app.use('/api/v1/', authRouter)
-app.use('/api/v1/', moviesRouter)
-app.use('/api/v1/', genresRouter)
+app.use(baseUrl, userRouter)
+app.use(baseUrl, authRouter)
+app.use(baseUrl, moviesRouter)
+app.use(baseUrl, genresRouter)
 
 app.use('/api/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
@@ -67,7 +68,7 @@ app.use('*', (req, res) => {
     responses.error({
         res,
         status: 404,
-        message: `URL no for found, please try with ${config.host}`
+        message: `URL no for found, please try with ${host}:${port}${baseUrl}`
     })
 })
 
